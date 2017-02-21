@@ -4,6 +4,7 @@ const express = require('express');
 const socketIO = require('socket.io');
 
 
+const {generateMessage} = require('./utils/message');
 const publicPath = path.join(__dirname, '../public');
 
 const port = process.env.PORT || 3000;
@@ -23,19 +24,8 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
 	console.log('new user connected');
 
-	socket.emit('newMessage', {
-		from: 'Admin',
-		text: 'Welcome to the chat app',
-		createdAt: new Date().getTime()
-
-	});
-
-	socket.broadcast.emit('newMessage', {
-		from: 'Admin',
-		text: 'New user joined the chat',
-		createdAt: new Date().getTime()
-	});
-
+	socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app' ));
+	socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined the chat'));
 
 	socket.on('createEmail', (newEmail) => {
 		console.log('createEmail', newEmail);
@@ -48,11 +38,7 @@ io.on('connection', (socket) => {
 	socket.on('createMessage', (message) => {
 		console.log('Message received from the client', message);
 		//its io instead of socket, because we want to emit to everybody
-		io.emit('newMessage', {
-			from: message.from,
-			text: message.text,
-			createdAt: new Date().getTime()
-		});
+		io.emit('newMessage', generateMessage(message.from, message.text));
 
 		//emit the event to everybody but this socket
 		// socket.broadcast.emit('newMessage', {
