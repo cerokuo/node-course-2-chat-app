@@ -4,12 +4,6 @@
 	//log in chrome console when you have connected with the server
 	socket.on('connect', function() {
 		console.log('connected to the server');
-
-		socket.emit('createEmail', {
-			to: 'jen@example.com',
-			text: 'this is Ivan'
-		});
-		
 	});
 
 	//log in chrome console when you disconnect from the server
@@ -19,16 +13,10 @@
 
 
 	socket.on('newEmail', function(email) {
-
 		console.log('New Email', email);
 	});
 
 
 	socket.on('newMessage', function(message) {
 		console.log('new message from server', message);
-
-		socket.emit('createMessage', {
-			from: 'ALberto',
-			text: 'Message received in the client, I send this to you, server'
-		});
 	});
