@@ -35,11 +35,11 @@ io.on('connection', (socket) => {
 		console.log('user vas disconnected');
 	});
 
-	socket.on('createMessage', (message) => {
+	socket.on('createMessage', (message, callback) => {
 		console.log('Message received from the client', message);
 		//its io instead of socket, because we want to emit to everybody
 		io.emit('newMessage', generateMessage(message.from, message.text));
-
+		callback('This is from the server.');
 		//emit the event to everybody but this socket
 		// socket.broadcast.emit('newMessage', {
 		// 	from: message.from,
