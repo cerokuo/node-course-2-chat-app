@@ -7,19 +7,6 @@
 <body>
 	<p>Welcome to the chat app</p>
 	<script src="/socket.io/socket.io.js"></script>
-	<script>
-		//store the socket in a variable and need to listen and send data from the server.
-		var socket = io();
-
-		//log in chrome console when you have connected with the server
-		socket.on('connect', () => {
-			console.log('connected to the server');
-		});
-
-		//log in chrome console when you disconnect from the server
-		socket.on('disconnect', () => {
-			console.log('User was disconnected');
-		});
-	</script>
+	<script src="/js/index.js"></script>
 </body>
 </html>

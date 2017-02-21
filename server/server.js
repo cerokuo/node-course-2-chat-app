@@ -23,9 +23,34 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
 	console.log('new user connected');
 
+	//create and send an event.
+	socket.emit('newEmail', {
+		from: 'pepe@example.com',
+		text: 'Hey, What is going on',
+		createdAt: 123
+	})
+
+	socket.on('createEmail', (newEmail) => {
+		console.log('createEmail', newEmail);
+	})
+
+
 	socket.on('disconnect', () => {
 		console.log('user vas disconnected');
 	});
+
+
+	socket.emit('newMessage', {
+		from: 'iffy',
+		text: 'testing the new chat app',
+		createdAt: Date.now()
+	})
+
+	socket.on('createMessage', (message) => {
+		console.log('Message received from the client', message);
+	});
+
+
 })
 
 server.listen(port, function() {
