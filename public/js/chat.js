@@ -42,6 +42,16 @@
 		console.log('User was disconnected');
 	});
 
+	socket.on('updateUserList', function(users) {
+		var ol = jQuery('<ol></ol>');
+
+		//Print the list of users in the screen
+		users.forEach(function(user) {
+			ol.append(jQuery('<li></li>').text(user));
+		});
+
+		jQuery('#users').html(ol);
+	});
 
 	socket.on('newEmail', function(email) {
 		console.log('New Email', email);
