@@ -22,7 +22,19 @@
 
 	//log in chrome console when you have connected with the server
 	socket.on('connect', function() {
-		console.log('connected to the server');
+		//from an string, we have an object
+		var params = jQuery.deparam(window.location.search);
+
+		socket.emit('join', params, function(err) {
+			if(err) {
+				alert(err);
+				window.location.href="/";
+			} else {
+				console.log('no error');
+
+			}
+
+		});
 	});
 
 	//log in chrome console when you disconnect from the server
