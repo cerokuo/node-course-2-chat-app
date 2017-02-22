@@ -18,42 +18,46 @@
 
 
 	socket.on('newMessage', function(message) {
+
 		var formattedTime = moment(message.createdAt).format('h:mm a');
+		var template = jQuery('#message-template').html();
+		//render the template of the html
+		var html = Mustache.render(template, {
+			text: message.text,
+			from : message.from,
+			createdAt: formattedTime
+		});
 
-		console.log('new message from server', message);
-		var li = jQuery('<li></li>');
-		li.text(`${message.from} ${formattedTime}: ${message.text}`);
-
-		jQuery('#messages').append(li);
+		jQuery('#messages').append(html);
 	});
 
 	socket.on('newLocationMessage', function (message) {
 		var formattedTime = moment(message.createdAt).format('h:mm a');
+		var template = jQuery('#location-message-template').html();
+		var html = Mustache.render(template, {
+			url: message.url,
+			from : message.from,
+			createdAt: formattedTime
+		});
 
-		var li = jQuery('<li></li>');
-		var a = jQuery('<a target="_blank">My current location</a>');
-
-		li.text(`${message.from} ${formattedTime}: `);
-		a.attr('href', message.url);
-		li.append(a);
-		jQuery('#messages').append(li);
+		jQuery('#messages').append(html);
 	});
 
 // clicking the button message-form will launch this function
-	jQuery('#message-form').on('submit', function(e) {
-		e.preventDefault(); 
+jQuery('#message-form').on('submit', function(e) {
+	e.preventDefault(); 
 
-		var messageTextBox = jQuery('[name=message]');
+	var messageTextBox = jQuery('[name=message]');
 
-		socket.emit('createMessage', {
-			from: 'User',
+	socket.emit('createMessage', {
+		from: 'User',
 			// getting the message inside the submit by the name.
 			text: messageTextBox.val()
 		}, function() {
 			messageTextBox.val('');
 		});
-	});
-	
+});
+
 
 	//var to take the info from the button
 	var locationButton = jQuery('#send-location');
